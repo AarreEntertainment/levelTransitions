@@ -7,9 +7,20 @@ public class transitionController : MonoBehaviour {
     bool unloaded = false;
 	// Use this for initialization
 	void Start () {
-        
+        if (SceneManager.sceneCount == 1)
+        {
+            unloaded = true;
+            transitionvals.nextLevel = firstLevelName;
+            StartCoroutine(loadNextScene());
+        }
+        else
+        {
+            GetComponent<Animator>().SetTrigger("fadeIn");
+        }
 		
 	}
+
+    public string firstLevelName;
 
     IEnumerator loadNextScene()
     {
@@ -32,13 +43,14 @@ public class transitionController : MonoBehaviour {
         SceneManager.UnloadSceneAsync("transitions");
         
     }
-	
+
     public static void startTransition(string oldScene, string newScene)
     {
         transitionvals.closableLevel = oldScene;
         transitionvals.nextLevel = newScene;
 
         SceneManager.LoadSceneAsync("transitions", LoadSceneMode.Additive);
+        
     }
 
 	// Update is called once per frame
